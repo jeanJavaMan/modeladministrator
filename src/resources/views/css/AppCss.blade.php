@@ -53,4 +53,10 @@
     .colapse-junto{
         margin-top: -18px !important;
     }
+    .card-primary:not(.card-outline) .card-header {
+        background-color: #007bff;
+    }
+    .card-secondary:not(.card-outline) .card-header {
+        background-color: #6c757d;
+    }
 </style>

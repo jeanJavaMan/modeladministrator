@@ -20,6 +20,9 @@
                     @endif
                 </div>
             @endforeach
+            @if(!empty($include_edit))
+                @includeIf($include_edit,["modelConfig"=>$modelConfig,"model"=>$model])
+            @endif
             <hr>
             <div class="form-group">
                 <div id="print_error_msg" class="alert alert-danger" style="display:none">
@@ -27,7 +30,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <button onclick="validateAndSubmit('./{{$route->url}}?id={{$model->id}}','#form-edit',this,false,true)" style="min-width: 100px;" type="button"
+                <button onclick="validateAndSubmit('./{{$route->url}}?id={{$model->id}}','#form-edit',this,false,true)"
+                        style="min-width: 100px;" type="button"
                         class="btn bg-gradient-success">{{__("modeladminlang::default.save")}}</button>
             </div>
         </form>

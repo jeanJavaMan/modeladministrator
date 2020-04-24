@@ -21,6 +21,9 @@
                     @endif
                 </div>
             @endforeach
+            @if(!empty($include_form))
+                @includeIf($include_form,["modelConfig"=>$modelConfig])
+            @endif
             <hr>
             <div class="form-group">
                 <div id="print_error_msg" class="alert alert-danger" style="display:none">
@@ -28,7 +31,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <button onclick="validateAndSubmit('../{{$route->url}}','#form', this)" style="min-width: 100px;" type="button"
+                <button onclick="validateAndSubmit('../{{$route->url}}','#form', this)" style="min-width: 100px;"
+                        type="button"
                         class="btn bg-gradient-success">{{__("modeladminlang::default.save")}}</button>
             </div>
         @endcomponent

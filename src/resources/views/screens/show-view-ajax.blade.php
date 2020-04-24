@@ -23,9 +23,11 @@
 
                     <button onclick="delete_item()" class="btn bg-gradient-danger" type="button"><i
                             class="fas fa-trash"> {{__("modeladminlang::default.delete")}}</i></button>
-
                 </div>
             </form>
+            @if(!empty($include_options))
+                @includeIf($include_options,["modelConfig"=>$modelConfig,"model"=>$model])
+            @endif
         @endcomponent
     </div>
     @foreach($elements as $element)
@@ -80,6 +82,9 @@
             @endif
         </div>
     @endforeach
+    @if(!empty($include_show))
+        @includeIf($include_show,["modelConfig"=>$modelConfig,"model"=>$model])
+    @endif
 </div>
 <script>
     function delete_item() {

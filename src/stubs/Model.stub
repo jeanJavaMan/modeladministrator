@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Jeanderson\modeladministrator\Models\CustomModel;
+
+/**
+ * Class {{className}}
+ {{property}}
+ * @package App\Models
+ */
+class {{className}} extends CustomModel
+{
+    protected $fillable = {{fillable}};
+    protected $table = "{{tableName}}";
+
+    public function toView()
+    {
+        return {{toView}};
+    }
+
+    {{relationFunctions}}
+
+}

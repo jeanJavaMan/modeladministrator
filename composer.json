@@ -1,0 +1,32 @@
+{
+    "name": "Jeanderson/modeladministrator",
+    "description": "pacote para administracao de modelos",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jeanderson S.lopes",
+            "email": "jeandersonsilvalopes@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "jeroennoten/laravel-adminlte": "^3.0",
+        "jenssegers/agent": "^2.6",
+        "realrashid/sweet-alert": "^3.0",
+        "barryvdh/laravel-dompdf": "^0.8.6",
+        "spatie/laravel-permission": "^3.10",
+        "bnbwebexpertise/laravel-attachments": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jeanderson\\modeladministrator\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jeanderson\\modeladministrator\\ModelAdministratorProvider"
+            ]
+        }
+    }
+}

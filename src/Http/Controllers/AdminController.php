@@ -9,6 +9,7 @@
     use Illuminate\Foundation\Validation\ValidatesRequests;
     use Illuminate\Http\Request;
     use Illuminate\Routing\Controller;
+    use Illuminate\Support\Facades\Artisan;
     use Jeanderson\modeladministrator\Models\Element;
     use Jeanderson\modeladministrator\Models\functions\CreateStub;
     use Jeanderson\modeladministrator\Models\ModelConfig;
@@ -24,6 +25,38 @@
             return view("modeladmin::admin.home");
         }
 
+        public function create_crud()
+        {
+            return view("modeladmin::admin.crud");
+        }
+
+        public function create_route()
+        {
+            return view("modeladmin::admin.custom-routes");
+        }
+
+        public function save_route(Request $request)
+        {
+            try {
+                $route = new Route();
+                $route->modelconfigs_id = $request->post("modelconfigs_id");
+                $route->url = $request->post("url");
+                $route->functions = $request->post("functions");
+                $route->method = $request->post("method");
+                $route->type = $request->post("type");
+                $route->visible_to_everyone = $request->post("visible_to_everyone");
+                $route->permissions = $request->post("permissions");
+                $route->save();
+                dump($route);
+                Artisan::call("cache:clear");
+                \alert()->success("Salvo", "Salvo com sucesso");
+            } catch (\Throwable $ex) {
+                \Log::error($ex);
+                \alert()->error("Erro", $ex->getMessage())->autoClose(0);
+            }
+            return redirect()->back();
+        }
+
         public function saveData(Request $request)
         {
 //            dump($request->all());
@@ -32,26 +65,29 @@
             $table = $request->post("table");
             $modelConfig = new ModelConfig();
             $modelConfig->title = $title;
-            $modelConfig->model_class = "\App\Models\\".$model_class;
+            $modelConfig->model_class = "\App\Models\\" . $model_class;
             $modelConfig->table = $table;
             $modelConfig->save();
             for ($i = 0; $i < count($request->post("fillable_var")); $i++) {
                 $this->saveElements($request, $i, $modelConfig);
             }
             for ($index = 0; $index < count($request->post("url")); $index++) {
-                $route = new Route();
-                $route->modelconfigs_id = $modelConfig->id;
-                $route->url = $request->post("url")[$index];
-                $route->functions = $request->post("functions")[$index];
-                $route->method = $request->post("method")[$index];
-                $route->type = $request->post("type")[$index];
-                $route->visible_to_everyone = $request->post("visible_to_everyone")[$index];
-                $route->permissions = $request->post("permissions")[$index];
-                $route->save();
+                if (!empty($request->post("url")[$index])) {
+                    $route = new Route();
+                    $route->modelconfigs_id = $modelConfig->id;
+                    $route->url = $request->post("url")[$index];
+                    $route->functions = $request->post("functions")[$index];
+                    $route->method = $request->post("method")[$index];
+                    $route->type = $request->post("type")[$index];
+                    $route->visible_to_everyone = $request->post("visible_to_everyone")[$index];
+                    $route->permissions = $request->post("permissions")[$index];
+                    $route->save();
+                }
             }
             $createStubs = new CreateStub();
             $createStubs->createModel($model_class, $table, $request->all());
             Alert::success("Sucesso", "Salvo com sucesso");
+            Artisan::call("cache:clear");
             return redirect()->back();
         }
 

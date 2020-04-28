@@ -3,6 +3,7 @@
     /**@var Element $element*/
     /**@var CustomModel $model*/
     /**@var \Jeanderson\modeladministrator\Models\Route $route*/
+    /**@var \Jeanderson\modeladministrator\Models\Route $route_delete*/
     $elements = $modelConfig->elements_cache();
     $route_delete = $modelConfig->routes_cache()->first(function ($route_element){ return $route_element->type == "delete";});
     $route_pdf = $modelConfig->routes_cache()->first(function ($route_element){ return $route_element->type == "pdf";});
@@ -10,19 +11,32 @@
 <div class="form-group">
     <div class="form-group">
         @component("modeladmin::layout.components.card-collapse",["title"=>__("modeladminlang::default.options"),"class"=>"card-success","id"=>"collapse-".$model->id])
-            <form method="post" id="form-delete" action="./{{$route_delete->url}}">
+            <form method="post" id="form-delete-{{$model->id}}" action="./{{$route_delete->url}}">
                 @csrf
                 <input type="hidden" name="id" value="{{Crypt::encrypt($model->id)}}">
                 <div class="form-group">
-                    <button onclick="show_edit_form({{$model->id}})" type="button" data-toggle="modal"
-                            data-target="#modal-edit"
-                            class="btn bg-gradient-warning"><i
-                            class="fas fa-edit"> {{__("modeladminlang::default.edit")}}</i></button>
-                    <a target="_blank" href="./{{$route_pdf->url}}?id={{$model->id}}" class="btn bg-gradient-primary"><i
-                            class="fas fa-file-pdf"></i> PDF</a>
-
-                    <button onclick="delete_item()" class="btn bg-gradient-danger" type="button"><i
-                            class="fas fa-trash"> {{__("modeladminlang::default.delete")}}</i></button>
+                    <div class="row">
+                        <div style="margin-bottom: 15px;" class="col-md-2">
+                            <button onclick="show_edit_form({{$model->id}})" type="button" data-toggle="modal"
+                                    data-target="#modal-edit"
+                                    class="btn bg-gradient-warning"><i
+                                    class="fas fa-edit"> {{__("modeladminlang::default.edit")}}</i></button>
+                        </div>
+                        @if($route_pdf->checkIfUserHaspermission())
+                            <div style="margin-bottom: 15px;" class="col-md-2">
+                                <a target="_blank" href="./{{$route_pdf->url}}?id={{$model->id}}"
+                                   class="btn bg-gradient-primary"><i
+                                        class="fas fa-file-pdf"></i> PDF</a>
+                            </div>
+                        @endif
+                        @if($route_delete->checkIfUserHaspermission())
+                            <div style="margin-bottom: 15px;" class="col-md-2">
+                                <button onclick="delete_item('{{$model->id}}')" class="btn bg-gradient-danger"
+                                        type="button"><i
+                                        class="fas fa-trash"> {{__("modeladminlang::default.delete")}}</i></button>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </form>
             @if(!empty($include_options))
@@ -87,7 +101,7 @@
     @endif
 </div>
 <script>
-    function delete_item() {
+    function delete_item(id) {
         Swal.fire({
             title: "{{__("modeladminlang::default.delete")}}",
             text: "{{__("modeladminlang::default.delete_message")}}",
@@ -99,7 +113,7 @@
             cancelButtonText: "{{__("modeladminlang::default.cancel_button")}}"
         }).then((result) => {
             if (result.value) {
-                $("#form-delete").submit();
+                $("#form-delete-" + id).submit();
             }
         })
     }

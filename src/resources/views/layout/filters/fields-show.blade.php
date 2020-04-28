@@ -13,8 +13,8 @@
                 @endforeach
             </div>
             <div class="form-group">
-                <button class="btn btn-success" type="submit">Exibir Campos Selecionados</button>
-                <a href="{{\Illuminate\Support\Facades\Request::url()}}" class="btn btn-primary">Retornar Padrão</a>
+                <button style="margin-bottom: 10px;" class="btn btn-success" type="submit">Exibir Campos Selecionados</button>
+                <a style="margin-bottom: 10px;" href="{{\Illuminate\Support\Facades\Request::url()}}" class="btn btn-primary">Retornar Padrão</a>
             </div>
         </form>
     </div>

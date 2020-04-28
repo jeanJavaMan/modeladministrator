@@ -4,7 +4,9 @@
     namespace Jeanderson\modeladministrator\Models\functions;
 
 
+    use Carbon\Carbon;
     use Jeanderson\modeladministrator\Utils\ElementsType;
+    use Jeanderson\modeladministrator\Utils\RelationsTypes;
 
     class CreateStub
     {
@@ -90,7 +92,7 @@
                             $function .= $this->createHasOne($class);
                             break;
                         case "hasMany":
-                            $function .= $this->createHasMany($myclass);
+                            $function .= $this->createHasMany($class);
                             break;
                         case "belongsToMany":
                             $function .= $this->createManyToMany($class, $myclass, $attributes["table_relation_many_to_many"][$index]);
@@ -107,20 +109,20 @@
         private function createHasOne($class_foreing)
         {
             $key = strtolower($class_foreing) . "_id";
-            return "\$this->hasOne($class_foreing:class,'id','$key');";
+            return "\$this->hasOne($class_foreing::class,'id','$key');\n";
         }
 
         private function createHasMany($class)
         {
             $key = strtolower($class) . "_id";
-            return "\$this->hasMany($class:class,'$key','id');";
+            return "\$this->hasMany($class::class,'$key','id');\n";
         }
 
         private function createManyToMany($class_foreing, $class, $table_name)
         {
             $foreing_key = strtolower($class) . "_id";
             $key = strtolower($class_foreing) . "_id";
-            return "\$this->belongsToMany($class_foreing::class,'$table_name','$foreing_key','$key');";
+            return "\$this->belongsToMany($class_foreing::class,'$table_name','$foreing_key','$key');\n";
         }
 
         protected function getStubs($name)

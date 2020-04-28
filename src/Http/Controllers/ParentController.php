@@ -4,6 +4,9 @@
 
 
     use Carbon\Carbon;
+    use Cassandra\Custom;
+    use http\Client\Response;
+    use Illuminate\Database\Eloquent\Model;
     use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
     use Illuminate\Foundation\Bus\DispatchesJobs;
     use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,8 +18,8 @@
     use Jeanderson\modeladministrator\Models\Route;
     use Jeanderson\modeladministrator\Models\view\Form;
     use Jeanderson\modeladministrator\Models\view\Table;
-    use PDF;
     use RealRashid\SweetAlert\Facades\Alert;
+    use PDF;
 
     /**
      * Class ParentController
@@ -38,7 +41,7 @@
                     $function = $this->route->functions;
                     return $this->$function($request);
                 }
-                return view("modeladmin::screens.no-permission");
+                return view("modeladmin::screens.no-permission-user");
             } catch (\Throwable $ex) {
                 \Log::error($ex);
                 return abort(500);

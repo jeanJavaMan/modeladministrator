@@ -59,4 +59,7 @@
     .card-secondary:not(.card-outline) .card-header {
         background-color: #6c757d;
     }
+    .card-success:not(.card-outline) .card-header {
+        background-color: #28a745;
+    }
 </style>

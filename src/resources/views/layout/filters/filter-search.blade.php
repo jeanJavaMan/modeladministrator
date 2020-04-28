@@ -22,6 +22,7 @@
             @endif
         </div>
         <div class="form-group">
+            @desktop
             <table id="table_search" class="table table-dark table-bordered">
                 <thead>
                 <tr>
@@ -71,6 +72,9 @@
                 </tr>
                 </tbody>
             </table>
+            @elsedesktop
+            @include("modeladmin::layout.filters.table-filter-mobile")
+            @enddesktop
         </div>
         <div class="form-group">
             <label>{{__("modeladminlang::default.groupby")}}:</label>
@@ -121,12 +125,15 @@
             </div>
         </div>
         <div class="form-group">
-            <button class="btn bg-gradient-success" type="submit">{{__("modeladminlang::default.filter_run")}}</button>
-            <a href="" class="btn btn-primary">{{__("modeladminlang::default.clear_filters")}}</a>
+            <button style="margin-bottom: 10px;" class="btn bg-gradient-success"
+                    type="submit">{{__("modeladminlang::default.filter_run")}}</button>
+            <a href="" style="margin-bottom: 10px;"
+               class="btn btn-primary">{{__("modeladminlang::default.clear_filters")}}</a>
         </div>
     </form>
     <div hidden>
         <div>
+            <div>
             <textarea id="operator_relation">
                  <select class="js-select" name="operator_relation[]">
                 @foreach(\Jeanderson\modeladministrator\Utils\OperationValues::getComparatorWhere() as $key => $value)
@@ -134,21 +141,21 @@
                      @endforeach
             </select>
             </textarea>
-            <textarea id="operator_relation_element">
+                <textarea id="operator_relation_element">
                  <select class="js-select-relation" name="operator_relation[]">
                     <option value="=">Igual</option>
                      <option value="!=">Diferente de</option>
                     </select>
             </textarea>
-            <textarea id="operator_normal">
+                <textarea id="operator_normal">
                 <select class="js-select" name="operator[]">
                         @foreach(\Jeanderson\modeladministrator\Utils\OperationValues::getOperatorsValues() as $key => $value)
                         <option value="{{$value}}">{{$key}}</option>
                     @endforeach
                     </select>
             </textarea>
-        </div>
-        <div>
+            </div>
+            @desktop
             <textarea id="tr_copy">
                 <tr>
                 <td>
@@ -187,6 +194,63 @@
                 </td>
             </tr>
             </textarea>
+            @elsedesktop
+            <textarea id="tr_copy">
+                <tr>
+            <th>{{__("modeladminlang::default.relational_operator")}}</th>
+            <td>
+                <select class="js-select" name="operator_relation[]">
+                @foreach(\Jeanderson\modeladministrator\Utils\OperationValues::getComparatorWhere() as $key => $value)
+                        <option value="{{$value}}">{{$key}}</option>
+                    @endforeach
+            </select>
+            </td>
+        </tr>
+                    <tr>
+            <th>{{__("modeladminlang::default.field")}}</th>
+            <td>
+                <select class="js-select" name="field_search[]" >
+                    <option value=""></option>
+                    @foreach($modelConfig->elements_cache() as $element)
+                        @if(request()->has("c"))
+                            @if(!is_null(request()->get($element->fillable_var)))
+                                <option value="{{$element->fillable_var}}">{{$element->label}}</option>
+                            @endif
+                        @else
+                            @if($element->show_in_table)
+                                <option value="{{$element->fillable_var}}">{{$element->label}}</option>
+                            @endif
+                        @endif
+                    @endforeach
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>{{__("modeladminlang::default.operator")}}</th>
+            <td>
+                <select class="js-select" name="operator[]" >
+                    @foreach(\Jeanderson\modeladministrator\Utils\OperationValues::getOperatorsValues() as $key => $value)
+                        <option value="{{$value}}">{{$key}}</option>
+                    @endforeach
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>{{__("modeladminlang::default.value")}}</th>
+        <td>
+            <input class="form-control" name="value_search[]" >
+        </td>
+        </tr>
+        <tr>
+            <th>Remover</th>
+        <td>
+                    <button onclick="remove_search_field_mobile(this)"
+                            title="{{__("modeladminlang::default.click_for_remove_fields")}}" class="btn btn-danger"
+                            type="button"><i class="fas fa-times"></i></button>
+                </td>
+        </tr>
+            </textarea>
+            @enddesktop
         </div>
     </div>
 @endcomponent

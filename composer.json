@@ -1,6 +1,7 @@
 {
-    "name": "jeanderson/modeladministrator",
+    "name": "Jeanderson/modeladministrator",
     "description": "pacote para administracao de modelos",
+    "license": "MIT",
     "type": "library",
     "authors": [
         {
@@ -11,7 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "jeroennoten/laravel-adminlte": "^3.0",
-        "jenssegers/agent": "^2.6",
+        "riverskies/laravel-mobile-detect": "^1.3",
         "realrashid/sweet-alert": "^3.0",
         "barryvdh/laravel-dompdf": "^0.8.6",
         "spatie/laravel-permission": "^3.10",

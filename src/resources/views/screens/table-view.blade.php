@@ -61,7 +61,7 @@
                 }
             });
             @else
-            Swal.fire("Sem Permissão","Você não permissão para editar","warning");
+            Swal.fire("Sem Permissão", "Você não permissão para editar", "warning");
             @endif
         }
 
@@ -180,19 +180,73 @@
             @includeIf("modeladmin::layout.filters.filter-search")
             @includeIf("modeladmin::layout.filters.fields-show")
         @endcomponent
-        @desktop
-        <div style="margin-top: -17px;" id="table_container">
-            @component("modeladmin::layout.components.table")
-                @slot("table_head")
-                    <tr class="tr-head">
-                        {!! $createHtml->prepareTableColumns() !!}
-                    </tr>
-                @endslot
-                @slot("table_body")
+        @if(!empty($include_custom_table))
+            <div style="margin-top: -17px;" id="table_container">
+                @include($include_custom_table)
+            </div>
+        @else
+            @desktop
+            <div style="margin-top: -17px;" id="table_container">
+                @component("modeladmin::layout.components.table")
+                    @slot("table_head")
+                        <tr class="tr-head">
+                            {!! $createHtml->prepareTableColumns() !!}
+                        </tr>
+                    @endslot
+                    @slot("table_body")
+                        @foreach($models as $model)
+                            <tr onclick="expand_table_tr('#tr-{{$model->id}}',{{$model->id}})"
+                                title="{{__("modeladminlang::default.click_to_expand")}}" class="tr-select">
+                                {!! $createHtml->getTableColumnDataForRow($model) !!}
+                            </tr>
+                            <tr id="tr-{{$model->id}}" class="tr-expand">
+                                <td colspan="{{$colspan}}">
+                                    <div id="show-loading-{{$model->id}}" class="text-center">
+                                        <div class="form-group">
+                                            <i class="fas fa-2x fa-sync fa-spin"></i>
+                                        </div>
+                                        <div class="form-group">
+                                            <p>{{__("modeladminlang::default.loading")}}...</p>
+                                        </div>
+                                    </div>
+                                    <div id="show-content-{{$model->id}}" style="display: none;">
+
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr hidden></tr>
+                        @endforeach
+                    @endslot
+                @endcomponent
+                <table id="header-fixed"></table>
+            </div>
+            @elsedesktop
+            <div style="margin-top: -17px;" id="table_container">
+                @php
+                    $data_th = $createHtml->prepareTableColumnsMobile();
+                    $count_td = 0;
+                @endphp
+                <table class="table table-bordered table-striped">
+                    <tbody>
                     @foreach($models as $model)
-                        <tr onclick="expand_table_tr('#tr-{{$model->id}}',{{$model->id}})"
-                            title="{{__("modeladminlang::default.click_to_expand")}}" class="tr-select">
-                            {!! $createHtml->getTableColumnDataForRow($model) !!}
+                        @php
+                            $data_td = $createHtml->getTableColumnDataForRowMobile($model);
+                            $data_count = 0;
+                        @endphp
+                        @for($i = 0; $i < count($data_td); $i++)
+                            <tr>
+                                {!! $data_th[$data_count] !!}
+                                {!! $data_td[$i] !!}
+                            </tr>
+                            @php($data_count++)
+                        @endfor
+                        <tr>
+                            <th class="tr-head">Ver/Opções</th>
+                            <td>
+                                <button onclick="expand_table_tr('#tr-{{$model->id}}',{{$model->id}})" type="button"
+                                        title="Clique para ver" class="btn btn-success btn-block"><i class="fas fa-eye"></i>
+                                </button>
+                            </td>
                         </tr>
                         <tr id="tr-{{$model->id}}" class="tr-expand">
                             <td colspan="{{$colspan}}">
@@ -209,62 +263,14 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr hidden></tr>
+                        <tr style="height: 10px"></tr>
                     @endforeach
-                @endslot
-            @endcomponent
-            <table id="header-fixed"></table>
-        </div>
-        @elsedesktop
-        <div style="margin-top: -17px;" id="table_container">
-            @php
-                $data_th = $createHtml->prepareTableColumnsMobile();
-                $count_td = 0;
-            @endphp
-            <table class="table table-bordered table-striped">
-                <tbody>
-                @foreach($models as $model)
-                    @php
-                        $data_td = $createHtml->getTableColumnDataForRowMobile($model);
-                        $data_count = 0;
-                    @endphp
-                    @for($i = 0; $i < count($data_td); $i++)
-                        <tr>
-                            {!! $data_th[$data_count] !!}
-                            {!! $data_td[$i] !!}
-                        </tr>
-                        @php($data_count++)
-                    @endfor
-                    <tr>
-                        <th class="tr-head">Ver/Opções</th>
-                        <td>
-                            <button onclick="expand_table_tr('#tr-{{$model->id}}',{{$model->id}})" type="button"
-                                    title="Clique para ver" class="btn btn-success btn-block"><i class="fas fa-eye"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr id="tr-{{$model->id}}" class="tr-expand">
-                        <td colspan="{{$colspan}}">
-                            <div id="show-loading-{{$model->id}}" class="text-center">
-                                <div class="form-group">
-                                    <i class="fas fa-2x fa-sync fa-spin"></i>
-                                </div>
-                                <div class="form-group">
-                                    <p>{{__("modeladminlang::default.loading")}}...</p>
-                                </div>
-                            </div>
-                            <div id="show-content-{{$model->id}}" style="display: none;">
-
-                            </div>
-                        </td>
-                    </tr>
-                    <tr style="height: 10px"></tr>
-                @endforeach
-                </tbody>
-            </table>
-            <table id="header-fixed"></table>
-        </div>
-        @enddesktop
+                    </tbody>
+                </table>
+                <table id="header-fixed"></table>
+            </div>
+            @enddesktop
+        @endif
         <hr>
         <div class="text-center">
             {{$models->links()}}

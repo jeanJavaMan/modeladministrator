@@ -48,9 +48,17 @@
             }
         }
 
-        public function list_data(Request $request)
+        protected function no_permission_user(){
+            return view("modeladmin::screens.no-permission-user");
+        }
+
+        protected function check_user_permission($permission){
+            return auth()->user()->hasPermissionTo($permission);
+        }
+
+        public function list_data(Request $request,$include_custom_table = "")
         {
-            return Table::create($this->route->modelConfig_cache()->model_class, $request);
+            return Table::create($this->route->modelConfig_cache()->model_class, $request,$include_custom_table);
         }
 
         public function create(Request $request, $include_form = "")

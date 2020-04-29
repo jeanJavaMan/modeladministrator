@@ -1,34 +1,36 @@
 <?php
-namespace Jeanderson\modeladministrator\Models\view;
+    namespace Jeanderson\modeladministrator\Models\view;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Jeanderson\modeladministrator\Models\ModelConfig;
-
-/**
- * Class Table
- * @package Jeanderson\modeladministrator\Models\view
- */
-class Table
-{
-    /**
-     * @param ModelConfig $modelConfig
-     * @param Request $request
-     * @return Factory|View
-     */
-    private static function show(ModelConfig $modelConfig, Request $request)
-    {
-        return view("modeladmin::screens.table-view")->with(["modelConfig" => $modelConfig,"request"=>$request]);
-    }
+    use Illuminate\Contracts\View\Factory;
+    use Illuminate\Http\Request;
+    use Illuminate\View\View;
+    use Jeanderson\modeladministrator\Models\ModelConfig;
 
     /**
-     * @param $modelClass
-     * @param Request $request
-     * @return Factory|View
+     * Class Table
+     * @package Jeanderson\modeladministrator\Models\view
      */
-    public static function create($modelClass, Request $request)
+    class Table
     {
-        return self::show(ModelConfig::getModelConfigWithCache($modelClass),$request);
+        /**
+         * @param ModelConfig $modelConfig
+         * @param Request $request
+         * @param $include_custom_table
+         * @return Factory|View
+         */
+        private static function show(ModelConfig $modelConfig, Request $request,$include_custom_table )
+        {
+            return view("modeladmin::screens.table-view")->with(["modelConfig" => $modelConfig,"request"=>$request,"include_custom_table"=>$include_custom_table]);
+        }
+
+        /**
+         * @param $modelClass
+         * @param Request $request
+         * @param $include_custom_table
+         * @return Factory|View
+         */
+        public static function create($modelClass, Request $request,$include_custom_table )
+        {
+            return self::show(ModelConfig::getModelConfigWithCache($modelClass),$request,$include_custom_table);
+        }
     }
-}

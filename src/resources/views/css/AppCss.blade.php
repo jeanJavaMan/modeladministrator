@@ -55,11 +55,14 @@
     }
     .card-primary:not(.card-outline) .card-header {
         background-color: #007bff;
+        color: white;
     }
     .card-secondary:not(.card-outline) .card-header {
         background-color: #6c757d;
+        color: white;
     }
     .card-success:not(.card-outline) .card-header {
         background-color: #28a745;
+        color: white;
     }
 </style>

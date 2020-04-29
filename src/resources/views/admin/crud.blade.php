@@ -7,10 +7,10 @@
 @stop
 
 @section('content')
-    <form action="{{route("modeladmin.savedata")}}" method="post">
-        @csrf
+    <form action="{{route("modeladmin.savedata")}}"  method="post">
         @component("modeladmin::layout.components.card",["title"=>"Create CRUD"])
             @component("modeladmin::layout.components.card-collapse",["title"=>"Configurações Iniciais","open"=>true])
+                @csrf
                 <div class="form-group">
                     <label>Classe</label>
                     <input class="form-control" name="model_class">
@@ -131,6 +131,7 @@
                         <div class="form-group">
                             <label>Tipo</label>
                             <input disabled class="form-control" name="type[]" value="{{$route_info["type"]}}">
+                            <input type="hidden"  class="form-control" name="type_route[]" value="{{$route_info["type"]}}">
                         </div>
                         <div class="form-group">
                             <label>URL</label>

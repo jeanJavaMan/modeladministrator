@@ -78,7 +78,7 @@
                     $route->url = $request->post("url")[$index];
                     $route->functions = $request->post("functions")[$index];
                     $route->method = $request->post("method")[$index];
-                    $route->type = $request->post("type")[$index];
+                    $route->type = $request->post("type_route")[$index];
                     $route->visible_to_everyone = $request->post("visible_to_everyone")[$index];
                     $route->permissions = $request->post("permissions")[$index];
                     $route->save();

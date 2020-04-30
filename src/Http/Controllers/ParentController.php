@@ -58,7 +58,7 @@
 
         public function list_data(Request $request,$include_custom_table = "")
         {
-            return Table::create($this->route->modelConfig_cache()->model_class, $request,$include_custom_table);
+            return Table::create($this->route->modelConfig_cache()->model_class, $request,$include_custom_table,$custom_query = null);
         }
 
         public function create(Request $request, $include_form = "")

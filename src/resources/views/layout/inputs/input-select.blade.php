@@ -4,7 +4,7 @@
 <label style="width: 100%" for="{{$element->fillable_var}}">
     {{$element->label}}:
     <select class="js-select form-control" name="{{$element->fillable_var}}"
-            id="{{$element->fillable_var}}" @foreach(explode(";",$element->attributes) as $attribute) {{$attribute}} @endforeach>
+            id="{{$element->fillable_var}}" @foreach(explode(";",$element->attributes) as $attribute) {!! $attribute !!}  @endforeach>
         @foreach($element->options_cache() as $option)
             <option @if(old($element->fillable_var,$element->value) == $element->value) selected
                     @endif value="{{$option->value}}">{{$option->value}}</option>

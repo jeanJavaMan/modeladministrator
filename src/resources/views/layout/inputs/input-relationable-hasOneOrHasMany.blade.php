@@ -13,7 +13,7 @@
 <label style="width: 100%" for="{{$element->fillable_var}}">
     {{$element->label}} {{$multiple ? " (".__("modeladminlang::default.multiple_selection").")":""}}:
     <select register-function="true" execute-script="execute_ajax_relation_{{$element->id}}" class="form-control" name="{{$element->fillable_var}}{{$multiple ?"[]":""}}" {{$multiple ? "multiple=multiple":""}}
-            id="{{$element->fillable_var}}" @foreach(explode(";",$element->attributes) as $attribute) {{$attribute}} @endforeach>
+            id="{{$element->fillable_var}}" @foreach(explode(";",$element->attributes) as $attribute) {!! $attribute !!}  @endforeach>
         @if($options)
             @if($options instanceof Illuminate\Database\Eloquent\Collection)
                 @foreach($options->all() as $option)

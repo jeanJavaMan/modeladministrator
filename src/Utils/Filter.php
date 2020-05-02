@@ -59,7 +59,7 @@
             $query = $this->modelConfig->model_class::query();
             for ($i = 0; $i < count($this->request->post("field_search")); $i++) {
                 $field = $this->request->post("field_search")[$i];
-                $operator = $this->request->post("operator")[$i];
+                $operator = $this->request->post("operator")[$i] ?? $this->request->post("operator_relation")[$i];
                 $value = $this->request->post("value_search")[$i];
                 $this->mountQuery($query, $field, $operator, $value, $i);
             }

@@ -56,7 +56,7 @@
                 @endphp
                 @if($results->total() > 0)
                     <div class="form-group">
-                        <label>{{$modelConfigRelation->title}}:</label>
+                        <label>{{$element->label ?? $modelConfigRelation->title}}:</label>
                         @component("modeladmin::layout.components.table")
                             @slot("table_head")
                                 <tr style='background:#535353;color:white;'>

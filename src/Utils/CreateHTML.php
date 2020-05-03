@@ -53,11 +53,11 @@
         {
             $html = "";
             foreach ($this->modelConfig->elements_cache() as $element) {
-                if(request()->has("c")){
-                    if(!is_null(request()->get($element->fillable_var))){
+                if (request()->has("c")) {
+                    if (!is_null(request()->get($element->fillable_var))) {
                         $html .= "<th>" . $element->label . "</th>";
                     }
-                }else{
+                } else {
                     if ($element->show_in_table) {
                         $html .= "<th>" . $element->label . "</th>";
                     }
@@ -73,13 +73,13 @@
         {
             $html = [];
             foreach ($this->modelConfig->elements_cache() as $element) {
-                if(request()->has("c")){
-                    if(!is_null(request()->get($element->fillable_var))){
+                if (request()->has("c")) {
+                    if (!is_null(request()->get($element->fillable_var))) {
                         $html[] = "<th class='tr-head'>" . $element->label . "</th>";
                     }
-                }else{
+                } else {
                     if ($element->show_in_table) {
-                        $html[] =  "<th class='tr-head'>" . $element->label . "</th>";
+                        $html[] = "<th class='tr-head'>" . $element->label . "</th>";
                     }
                 }
             }
@@ -95,14 +95,25 @@
         {
             $html = "";
             foreach ($this->modelConfig->elements_cache() as $element) {
-                if(request()->has("c")){
-                    if(!is_null(request()->get($element->fillable_var))){
-                        $this->prepareTableDataForRow($html,$element,$model);
+                if (request()->has("c")) {
+                    if (!is_null(request()->get($element->fillable_var))) {
+                        $this->prepareTableDataForRow($html, $element, $model);
                     }
-                }else{
+                } else {
                     if ($element->show_in_table) {
-                        $this->prepareTableDataForRow($html,$element,$model);
+                        $this->prepareTableDataForRow($html, $element, $model);
                     }
+                }
+            }
+            return $html;
+        }
+
+        public function getTableColumnDataForRowInShowView(CustomModel $model)
+        {
+            $html = "";
+            foreach ($this->modelConfig->elements_cache() as $element) {
+                if ($element->show_in_table) {
+                    $this->prepareTableDataForRow($html, $element, $model);
                 }
             }
             return $html;
@@ -112,50 +123,53 @@
         {
             $html = [];
             foreach ($this->modelConfig->elements_cache() as $element) {
-                if(request()->has("c")){
-                    if(!is_null(request()->get($element->fillable_var))){
-                        $this->prepareTableDataForRowMobile($html,$element,$model);
+                if (request()->has("c")) {
+                    if (!is_null(request()->get($element->fillable_var))) {
+                        $this->prepareTableDataForRowMobile($html, $element, $model);
                     }
-                }else{
+                } else {
                     if ($element->show_in_table) {
-                        $this->prepareTableDataForRowMobile($html,$element,$model);
+                        $this->prepareTableDataForRowMobile($html, $element, $model);
                     }
                 }
             }
             return $html;
         }
 
-        private function prepareTableDataForRowMobile(&$html,Element $element,CustomModel $model){
+        private function prepareTableDataForRowMobile(&$html, Element $element, CustomModel $model)
+        {
             if ($element->is_relationable) {
                 $function = $element->relationship_function;
                 $result = $model->$function()->first();
                 $html[] = "<td>" . ($result ? $result->toView() : "") . "</td>";
             } else {
                 $fillable = $element->fillable_var;
-                if(key_exists($fillable,$model->getColumnCustomStyle())){
-                    $html[] ="<td class='" . $model->getColumnCustomStyle()[$fillable]["class"] . "' style='" . $model->getColumnCustomStyle()[$fillable]["style"] . "'>" . $model->$fillable . "</td>";
-                }else{
-                    $html[] = "<td>".$model->$fillable."</td>";
+                if (key_exists($fillable, $model->getColumnCustomStyle())) {
+                    $html[] = "<td class='" . $model->getColumnCustomStyle()[$fillable]["class"] . "' style='" . $model->getColumnCustomStyle()[$fillable]["style"] . "'>" . $model->$fillable . "</td>";
+                } else {
+                    $html[] = "<td>" . $model->$fillable . "</td>";
                 }
             }
         }
 
-        private function prepareTableDataForRow(&$html,Element $element,CustomModel $model){
+        private function prepareTableDataForRow(&$html, Element $element, CustomModel $model)
+        {
             if ($element->is_relationable) {
                 $function = $element->relationship_function;
                 $result = $model->$function()->first();
                 $html .= "<td>" . ($result ? $result->toView() : "") . "</td>";
             } else {
                 $fillable = $element->fillable_var;
-                if(key_exists($fillable,$model->getColumnCustomStyle())){
+                if (key_exists($fillable, $model->getColumnCustomStyle())) {
                     $html .= "<td class='" . $model->getColumnCustomStyle()[$fillable]["class"] . "' style='" . $model->getColumnCustomStyle()[$fillable]["style"] . "'>" . $model->$fillable . "</td>";
-                }else{
-                    $html .= "<td>".$model->$fillable."</td>";
+                } else {
+                    $html .= "<td>" . $model->$fillable . "</td>";
                 }
             }
         }
 
-        public function getRoutesForType($type = "show"){
+        public function getRoutesForType($type = "show")
+        {
             return $this->routesData["routes"][$type];
         }
 

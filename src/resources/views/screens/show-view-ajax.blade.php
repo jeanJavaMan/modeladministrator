@@ -4,6 +4,7 @@
     /**@var CustomModel $model*/
     /**@var \Jeanderson\modeladministrator\Models\Route $route*/
     /**@var \Jeanderson\modeladministrator\Models\Route $route_delete*/
+    /**@var CustomModel $result*/
     $elements = $modelConfig->elements_cache();
     $route_delete = $modelConfig->routes_cache()->first(function ($route_element){ return $route_element->type == "delete";});
     $route_pdf = $modelConfig->routes_cache()->first(function ($route_element){ return $route_element->type == "pdf";});
@@ -51,6 +52,7 @@
                     $function = $element->relationship_function;
                     $modelConfigRelation = \Jeanderson\modeladministrator\Models\ModelConfig::getModelConfigWithCache($element->relationable_with_class);
                     $results = $model->$function()->paginate(15,['*'],$modelConfigRelation->title);
+                    $createHtmlRelation = new \Jeanderson\modeladministrator\Utils\CreateHTML($modelConfigRelation);
                 @endphp
                 @if($results->total() > 0)
                     <div class="form-group">
@@ -68,12 +70,7 @@
                             @slot("table_body")
                                 @foreach($results as $result)
                                     <tr>
-                                        @foreach($modelConfigRelation->elements_cache() as $element)
-                                            @php($fillable = $element->fillable_var)
-                                            @if($element->show_in_table)
-                                                <td>{{$result->$fillable ?? ""}}</td>
-                                            @endif
-                                        @endforeach
+                                        {!! $createHtmlRelation->getTableColumnDataForRowInShowView($result) !!}
                                     </tr>
                                 @endforeach
                             @endslot

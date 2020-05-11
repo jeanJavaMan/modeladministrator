@@ -37,12 +37,13 @@
 
         /**
          * @param $custom_query
+         * @param $custom_filter_query
          * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
          */
-        public function filter($custom_query)
+        public function filter($custom_query,$custom_filter_query)
         {
             if ($this->request->has("filter")) {
-                return $this->create_query();
+                return $this->create_query($custom_filter_query);
             } else {
                 if(!is_null($custom_query)){
                     return $custom_query;
@@ -53,10 +54,14 @@
             }
         }
 
-        private function create_query()
+        private function create_query($custom_filter_query)
         {
             /**@var Builder $query */
-            $query = $this->modelConfig->model_class::query();
+            if(!is_null($custom_filter_query)){
+                $query = $custom_filter_query;
+            }else{
+                $query = $this->modelConfig->model_class::query();
+            }
             for ($i = 0; $i < count($this->request->post("field_search")); $i++) {
                 $field = $this->request->post("field_search")[$i];
                 $operator = $this->request->post("operator")[$i] ?? $this->request->post("operator_relation")[$i];
@@ -185,12 +190,13 @@
          * @param ModelConfig $modelConfig
          * @param Request $request
          * @param $custom_query
+         * @param $custom_filter_query
          * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
          */
-        public static function filter_function(ModelConfig $modelConfig, Request $request,$custom_query)
+        public static function filter_function(ModelConfig $modelConfig, Request $request,$custom_query,$custom_filter_query)
         {
             $filter = new Filter($modelConfig, $request);
-            return $filter->filter($custom_query);
+            return $filter->filter($custom_query,$custom_filter_query);
         }
 
 

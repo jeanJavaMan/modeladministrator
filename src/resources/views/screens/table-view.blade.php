@@ -4,11 +4,10 @@
     /**@var \Jeanderson\modeladministrator\Models\Element $element*/
     /**@var \Jeanderson\modeladministrator\Models\CustomModel[] $models*/
     /**@var \Illuminate\Http\Request $request*/
-    if(is_null($custom_query)){
-        $custom_query = null;
-    }
+    /**@var \Illuminate\Database\Eloquent\Builder $custom_filter_query*/
+    /**@var \Illuminate\Database\Eloquent\Builder $custom_query*/
     $createHtml = new \Jeanderson\modeladministrator\Utils\CreateHTML($modelConfig);
-    $models = \Jeanderson\modeladministrator\Utils\Filter::filter_function($modelConfig,$request,$custom_query);
+    $models = \Jeanderson\modeladministrator\Utils\Filter::filter_function($modelConfig,$request,$custom_query,$custom_filter_query);
     $route = $createHtml->getRoutesForType("show");
     $route_search = $createHtml->getRoutesForType("searchinput");
     $route_edit = $createHtml->getRoutesForType("edit");

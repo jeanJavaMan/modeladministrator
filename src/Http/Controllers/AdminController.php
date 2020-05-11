@@ -47,7 +47,6 @@
                 $route->visible_to_everyone = $request->post("visible_to_everyone");
                 $route->permissions = $request->post("permissions");
                 $route->save();
-                dump($route);
                 Artisan::call("cache:clear");
                 \alert()->success("Salvo", "Salvo com sucesso");
             } catch (\Throwable $ex) {

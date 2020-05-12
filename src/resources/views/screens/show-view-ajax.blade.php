@@ -58,6 +58,7 @@
                             <strong>{{$element->label ?? \Jeanderson\modeladministrator\Models\ModelConfig::getModelConfigWithCache($element->relationable_with_class)->title}}
                                 :</strong> {{$result_hasOne->toView() ?? "Dado Nulo ou excluído"}}
                         @endif
+                        <hr>
                     </div>
                 @else
                     @php

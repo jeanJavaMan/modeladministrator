@@ -48,36 +48,37 @@
     @foreach($elements as $element)
         <div class="form-group">
             @if($element->is_relationable)
-                @php
-                    $function = $element->relationship_function;
-                    $modelConfigRelation = \Jeanderson\modeladministrator\Models\ModelConfig::getModelConfigWithCache($element->relationable_with_class);
-                    $results = $model->$function()->paginate(15,['*'],$modelConfigRelation->title);
-                    $createHtmlRelation = new \Jeanderson\modeladministrator\Utils\CreateHTML($modelConfigRelation);
-                @endphp
-                @if($results->total() > 0)
+                @if($element->relationship_type_function == "hasOne")
                     <div class="form-group">
-                        <label>{{$element->label ?? $modelConfigRelation->title}}:</label>
-                        @component("modeladmin::layout.components.table")
-                            @slot("table_head")
-                                <tr style='background:#535353;color:white;'>
-                                    @foreach($modelConfigRelation->elements_cache() as $element)
-                                        @if($element->show_in_table)
-                                            <th>{{$element->label}}</th>
-                                        @endif
-                                    @endforeach
-                                </tr>
-                            @endslot
-                            @slot("table_body")
-                                @foreach($results as $result)
-                                    <tr>
-                                        {!! $createHtmlRelation->getTableColumnDataForRowInShowView($result) !!}
-                                    </tr>
-                                @endforeach
-                            @endslot
-                        @endcomponent
-                        <div>{{$results->appends(["id"=>$model->id,$modelConfigRelation->title => $results->currentPage()])->links()}}</div>
-                        <hr>
+                        @php
+                            $function = $element->relationship_function;
+                            $result_hasOne = $model->$function()->first();
+                        @endphp
+                        @if($result_hasOne)
+                            <strong>{{$element->label ?? \Jeanderson\modeladministrator\Models\ModelConfig::getModelConfigWithCache($element->relationable_with_class)->title}}
+                                :</strong> {{$result_hasOne->toView() ?? "Dado Nulo ou excluído"}}
+                        @endif
                     </div>
+                @else
+                    @php
+                        $function = $element->relationship_function;
+                        $modelConfigRelation = \Jeanderson\modeladministrator\Models\ModelConfig::getModelConfigWithCache($element->relationable_with_class);
+                        $results = $model->$function()->paginate(15,['*'],$modelConfigRelation->title);
+                    @endphp
+                    @if($results->total() > 0)
+                        <div class="form-group">
+                            <label>{{$element->label ?? $modelConfigRelation->title}}:</label>
+                            <ul>
+                                @foreach($results as $result)
+                                    <li>
+                                        {{$result->toView() ?? "Dado nulo ou excluído"}}
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <div>{{$results->appends(["id"=>$model->id,$modelConfigRelation->title => $results->currentPage()])->links()}}</div>
+                            <hr>
+                        </div>
+                    @endif
                 @endif
             @else
                 @php($fillable = $element->fillable_var)

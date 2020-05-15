@@ -56,9 +56,9 @@
             return auth()->user()->hasPermissionTo($permission);
         }
 
-        public function list_data(Request $request,$include_custom_table = "")
+        public function list_data(Request $request,$include_custom_table = "",$includes = [])
         {
-            return Table::create($this->route->modelConfig_cache()->model_class, $request,$include_custom_table,$custom_query = null,$custom_filter_query = null);
+            return Table::create($this->route->modelConfig_cache()->model_class, $request,$include_custom_table,$custom_query = null,$custom_filter_query = null,$includes);
         }
 
         public function create(Request $request, $include_form = "")

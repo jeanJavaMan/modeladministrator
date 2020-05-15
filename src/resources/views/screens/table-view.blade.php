@@ -246,7 +246,8 @@
                             <th class="tr-head">Ver/Opções</th>
                             <td>
                                 <button onclick="expand_table_tr('#tr-{{$model->id}}',{{$model->id}})" type="button"
-                                        title="Clique para ver" class="btn btn-success btn-block"><i class="fas fa-eye"></i>
+                                        title="Clique para ver" class="btn btn-success btn-block"><i
+                                        class="fas fa-eye"></i>
                                 </button>
                             </td>
                         </tr>
@@ -272,6 +273,11 @@
                 <table id="header-fixed"></table>
             </div>
             @enddesktop
+        @endif
+        @if(!empty($includes))
+            @if(isset($includes[\Jeanderson\modeladministrator\Enums\IncludeFieldType::TABLE_VIEW_FOOTER]))
+                @include($includes[\Jeanderson\modeladministrator\Enums\IncludeFieldType::TABLE_VIEW_FOOTER])
+            @endif
         @endif
         <hr>
         <div class="text-center">

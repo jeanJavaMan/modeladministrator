@@ -18,11 +18,12 @@
          * @param $include_custom_table
          * @param $custom_query
          * @param $custom_filter_query
+         * @param $includes
          * @return Factory|View
          */
-        private static function show(ModelConfig $modelConfig, Request $request,$include_custom_table,$custom_query,$custom_filter_query)
+        private static function show(ModelConfig $modelConfig, Request $request,$include_custom_table,$custom_query,$custom_filter_query,$includes)
         {
-            return view("modeladmin::screens.table-view")->with(["modelConfig" => $modelConfig,"request"=>$request,"include_custom_table"=>$include_custom_table,"custom_query"=>$custom_query,"custom_filter_query"=>$custom_filter_query]);
+            return view("modeladmin::screens.table-view")->with(["modelConfig" => $modelConfig,"request"=>$request,"include_custom_table"=>$include_custom_table,"custom_query"=>$custom_query,"custom_filter_query"=>$custom_filter_query,"includes"=>$includes]);
         }
 
         /**
@@ -31,10 +32,11 @@
          * @param $include_custom_table
          * @param $custom_query
          * @param $custom_filter_query
+         * @param array $includes
          * @return Factory|View
          */
-        public static function create($modelClass, Request $request,$include_custom_table,$custom_query,$custom_filter_query = null)
+        public static function create($modelClass, Request $request,$include_custom_table,$custom_query,$custom_filter_query = null,$includes = [])
         {
-            return self::show(ModelConfig::getModelConfigWithCache($modelClass),$request,$include_custom_table,$custom_query,$custom_filter_query);
+            return self::show(ModelConfig::getModelConfigWithCache($modelClass),$request,$include_custom_table,$custom_query,$custom_filter_query,$includes);
         }
     }

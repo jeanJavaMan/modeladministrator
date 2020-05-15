@@ -18,7 +18,6 @@
                 <label>{{__("modeladminlang::default.filter")}}:</label>
                 <p class="alert-dark">{!!$request->post("query_text") !!}<br><small>Obs: comparação com campos
                         relacionáveis é exibido somente o ID do campo</small></p>
-
             @endif
         </div>
         <div class="form-group">
@@ -121,6 +120,7 @@
                     <option value="300">300</option>
                     <option value="400">400</option>
                     <option value="500">500</option>
+                    <option value="1000">1000</option>
                 </select>
             </div>
         </div>

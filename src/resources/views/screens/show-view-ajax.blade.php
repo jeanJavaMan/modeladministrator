@@ -4,10 +4,13 @@
     /**@var CustomModel $model*/
     /**@var \Jeanderson\modeladministrator\Models\Route $route*/
     /**@var \Jeanderson\modeladministrator\Models\Route $route_delete*/
+    /**@var \Jeanderson\modeladministrator\Models\Route $route_edit*/
     /**@var CustomModel $result*/
     $elements = $modelConfig->elements_cache();
-    $route_delete = $modelConfig->routes_cache()->first(function ($route_element){ return $route_element->type == "delete";});
-    $route_pdf = $modelConfig->routes_cache()->first(function ($route_element){ return $route_element->type == "pdf";});
+    $createHtml = new \Jeanderson\modeladministrator\Utils\CreateHTML($modelConfig);
+    $route_delete = $createHtml->getRoutesForType("delete");
+    $route_pdf = $createHtml->getRoutesForType("pdf");
+    $route_edit = $createHtml->getRoutesForType("edit");
 @endphp
 <div class="form-group">
     <div class="form-group">
@@ -17,12 +20,14 @@
                 <input type="hidden" name="id" value="{{Crypt::encrypt($model->id)}}">
                 <div class="form-group">
                     <div class="row">
-                        <div style="margin-bottom: 15px;" class="col-md-2">
-                            <button onclick="show_edit_form({{$model->id}})" type="button" data-toggle="modal"
-                                    data-target="#modal-edit"
-                                    class="btn bg-gradient-warning"><i
-                                    class="fas fa-edit"> {{__("modeladminlang::default.edit")}}</i></button>
-                        </div>
+                        @if($route_edit->checkIfUserHaspermission())
+                            <div style="margin-bottom: 15px;" class="col-md-2">
+                                <button onclick="show_edit_form({{$model->id}})" type="button" data-toggle="modal"
+                                        data-target="#modal-edit"
+                                        class="btn bg-gradient-warning"><i
+                                        class="fas fa-edit"> {{__("modeladminlang::default.edit")}}</i></button>
+                            </div>
+                        @endif
                         @if($route_pdf->checkIfUserHaspermission())
                             <div style="margin-bottom: 15px;" class="col-md-2">
                                 <a target="_blank" href="./{{$route_pdf->url}}?id={{$model->id}}"

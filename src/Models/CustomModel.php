@@ -87,4 +87,13 @@
         public function getColumnCustomStyle(){
             return [];
         }
+
+        /**
+         * Retorna array de enum referente ao campo
+         * @param $fillable
+         * @return array
+         */
+        public static function getEnumsValues($fillable){
+            return [];
+        }
     }

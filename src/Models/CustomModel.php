@@ -67,12 +67,13 @@
          */
         private function setFillable($fillable, $value, $element)
         {
-            if($element->type_input == "password"){
-                $this->$fillable = \Hash::make($value);
-            }else{
-                $this->$fillable = $value;
+            if(!empty($value) || !is_null($value)){
+                if($element->type_input == "password"){
+                    $this->$fillable = \Hash::make($value);
+                }else{
+                    $this->$fillable = $value;
+                }
             }
-
         }
 
         /**

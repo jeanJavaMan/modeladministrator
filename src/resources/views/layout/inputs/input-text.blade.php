@@ -13,7 +13,8 @@ $enums_values = $modelConfig->model_class::getEnumsValues($element->fillable_var
     </select>
 @else
     <input type="{{$element->type_input}}" name="{{$element->fillable_var}}" id="{{$element->fillable_var}}"
-           value="{{old($element->fillable_var,$element->value)}}" class="form-control {{$element->class_field}}"
+           value="{{$element->type_input == "password" ? "":old($element->fillable_var,$element->value)}}"
+           class="form-control {{$element->class_field}}"
            placeholder="{{$element->placeholder}}"@foreach(explode(";",$element->attributes) as $attribute) {!! $attribute !!}  @endforeach>
 @endif
 @if($errors ?? false)

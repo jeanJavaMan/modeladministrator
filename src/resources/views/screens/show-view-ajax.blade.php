@@ -93,6 +93,8 @@
                     <textarea readonly class="form-control">{{$model->$fillable}}</textarea>
                 @elseif($element->type_input == "file")
                     @includeIf("modeladmin::screens.show-attachments")
+                @elseif($element->type_input == "password")
+                    **************
                 @else
                     {{$model->$fillable}}
                 @endif

@@ -13,7 +13,7 @@
         $(element).select2({
             width: "100%",
             ajax: {
-                url: "{{url("protected/").$route->url}}?s=1",
+                url: "{{url("protected/")."/".$route->url}}?s=1",
                 data: function (params) {
                     return {
                         search: params.term,

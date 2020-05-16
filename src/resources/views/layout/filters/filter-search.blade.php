@@ -10,7 +10,7 @@
             </a>
         @endslot
     @endif
-    <form method="post" action="">
+    <form {!! $target  ?? "" !!} method="post" action="">
         @csrf
         <input type="hidden" name="filter" value="1">
         <div class="form-group">

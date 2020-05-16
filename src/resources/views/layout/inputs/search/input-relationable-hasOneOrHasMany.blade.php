@@ -6,14 +6,14 @@
     $multiple = \Illuminate\Support\Str::contains($element->relationship_type_function,"Many");
 
 @endphp
-    <select class="form-control" execute-script="execute_ajax_relation" name="value_search[]">
-    </select>
+<select class="form-control" execute-script="execute_ajax_relation" name="value_search[]">
+</select>
 <script>
     function execute_ajax_relation(element){
         $(element).select2({
             width: "100%",
             ajax: {
-                url: "./{{$route->url}}?s=1",
+                url: "{{url("protected/").$route->url}}?s=1",
                 data: function (params) {
                     return {
                         search: params.term,

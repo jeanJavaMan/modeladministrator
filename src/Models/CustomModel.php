@@ -63,11 +63,16 @@
          * Altera o valor do campo de acordo com o seu tipo.
          * @param $fillable
          * @param $value
-         * @param $element
+         * @param Element $element
          */
         private function setFillable($fillable, $value, $element)
         {
-            $this->$fillable = $value;
+            if($element->type_input == "password"){
+                $this->$fillable = \Hash::make($value);
+            }else{
+                $this->$fillable = $value;
+            }
+
         }
 
         /**

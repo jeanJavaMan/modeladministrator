@@ -144,10 +144,14 @@
                 $html[] = "<td>" . ($result ? $result->toView() : "") . "</td>";
             } else {
                 $fillable = $element->fillable_var;
-                if (key_exists($fillable, $model->getColumnCustomStyle())) {
+                if (isset($model->getColumnCustomStyle()[$fillable])) {
                     $html[] = "<td class='" . $model->getColumnCustomStyle()[$fillable]["class"] . "' style='" . $model->getColumnCustomStyle()[$fillable]["style"] . "'>" . $model->$fillable . "</td>";
                 } else {
-                    $html[] = "<td>" . $model->$fillable . "</td>";
+                    if($element->type_input == "password"){
+                        $html[] = "<td>************</td>";
+                    }else{
+                        $html[] = "<td>" . $model->$fillable . "</td>";
+                    }
                 }
             }
         }
@@ -160,10 +164,14 @@
                 $html .= "<td>" . ($result ? $result->toView() : "") . "</td>";
             } else {
                 $fillable = $element->fillable_var;
-                if (key_exists($fillable, $model->getColumnCustomStyle())) {
+                if (isset($model->getColumnCustomStyle()[$fillable])) {
                     $html .= "<td class='" . $model->getColumnCustomStyle()[$fillable]["class"] . "' style='" . $model->getColumnCustomStyle()[$fillable]["style"] . "'>" . $model->$fillable . "</td>";
                 } else {
-                    $html .= "<td>" . $model->$fillable . "</td>";
+                    if($element->type_input == "password"){
+                        $html .= "<td>**********</td>";
+                    }else{
+                        $html .= "<td>" . $model->$fillable . "</td>";
+                    }
                 }
             }
         }

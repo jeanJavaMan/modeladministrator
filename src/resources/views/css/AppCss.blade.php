@@ -65,4 +65,8 @@
         background-color: #28a745;
         color: white;
     }
+    .card-config-color:not(.card-outline) .card-header {
+        background-color: {{config("modeladmin.card_color")}};
+        color: white;
+    }
 </style>

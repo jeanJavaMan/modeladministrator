@@ -34,7 +34,6 @@
 
         public function directionControl($url, Request $request)
         {
-//        dump($url);
             try {
                 $this->route = Route::where("url", $url)->first();
                 if ($this->route->visible_to_everyone || $this->route->checkIfUserHaspermission()) {
@@ -48,17 +47,30 @@
             }
         }
 
-        protected function no_permission_user(){
+        public function directionControlProtected($url, Request $request)
+        {
+            $path_url = $request->path();
+            if (isset(config("modeladmin.block_routes")[$path_url])) {
+                \Log::info("Tentativa de acesso a rota protegida: " . $path_url);
+                return abort(404);
+            } else {
+                return $this->directionControl($url, $request);
+            }
+        }
+
+        protected function no_permission_user()
+        {
             return view("modeladmin::screens.no-permission-user");
         }
 
-        protected function check_user_permission($permission){
+        protected function check_user_permission($permission)
+        {
             return auth()->user()->hasPermissionTo($permission);
         }
 
-        public function list_data(Request $request,$include_custom_table = "",$includes = [])
+        public function list_data(Request $request, $include_custom_table = "", $includes = [])
         {
-            return Table::create($this->route->modelConfig_cache()->model_class, $request,$include_custom_table,$custom_query = null,$custom_filter_query = null,$includes);
+            return Table::create($this->route->modelConfig_cache()->model_class, $request, $include_custom_table, $custom_query = null, $custom_filter_query = null, $includes);
         }
 
         public function create(Request $request, $include_form = "")
@@ -83,13 +95,13 @@
             }
         }
 
-        public function show(Request $request, $include_show = "",$include_options = "")
+        public function show(Request $request, $include_show = "", $include_options = "")
         {
             try {
                 if ($request->has("id")) {
                     $model = $this->route->modelConfig_cache()->model_class::find($request->get("id"));
                     $view = view("modeladmin::screens.show-view-ajax")
-                        ->with(["model" => $model, "modelConfig" => $this->route->modelConfig_cache(), "include_show" => $include_show,"include_options"=>$include_options])
+                        ->with(["model" => $model, "modelConfig" => $this->route->modelConfig_cache(), "include_show" => $include_show, "include_options" => $include_options])
                         ->render();
                     return response()->json(array('success' => true, 'html' => $view));
                 }
@@ -99,14 +111,14 @@
             }
         }
 
-        public function edit(Request $request,$include_edit = "")
+        public function edit(Request $request, $include_edit = "")
         {
             try {
                 if ($request->has("id")) {
                     $model = $this->route->modelConfig_cache()->model_class::find($request->get("id"));
                     $this->getAttributesWithValues($request, $model);
                     $view = view("modeladmin::screens.edit-view")
-                        ->with(["model" => $model, "modelConfig" => $this->route->modelConfig_cache(),"include_edit"=>$include_edit])
+                        ->with(["model" => $model, "modelConfig" => $this->route->modelConfig_cache(), "include_edit" => $include_edit])
                         ->render();
                     return response()->json(array('success' => true, 'html' => $view));
                 }

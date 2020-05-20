@@ -1,5 +1,5 @@
 <div class="form-group {{$divClass ?? ""}}">
-    <div class="card {{$class ?? "card-primary"}} ">
+    <div class="card {{$class ?? "card-config-color"}} ">
         <a title="{{__("modeladminlang::default.click_to_expand")}}" data-toggle="collapse" class="{{empty($open) ? "collapsed":""}}"
            {{empty($open) ? "":"aria-expanded='true'"}} href="#{{$id??"collapse1"}}">
             <div class="card-header">

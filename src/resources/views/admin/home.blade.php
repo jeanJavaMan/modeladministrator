@@ -14,6 +14,9 @@
         <div class="form-group">
             <a href="{{route("modeladmin.create.route")}}" style="color: white" class="btn btn-success">Criar Rotas Customizadas</a>
         </div>
+        <div class="form-group">
+            <a href="{{route("modeladmin.add.element")}}" style="color: white" class="btn btn-secondary">Add Elementos</a>
+        </div>
     @endcomponent
 @stop
 

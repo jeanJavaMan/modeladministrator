@@ -17,9 +17,9 @@
     function add_search_field_mobile(element) {
         let table = $("#table_search > tbody");
         table.append($("#tr_copy").val());
-        let tr =  $("#table_search >tbody >  tr").last().prev().prev();
-        tr.find("select").select2({width: '100%'});
-        tr.prev().find("select").select2({width: '100%'});
+       let tr =  $("#table_search >tbody >  tr").last().prev().prev();
+       tr.find("select").select2({width: '100%'});
+       tr.prev().find("select").select2({width: '100%'});
         tr.prev().prev().find("select").select2({width: '100%'});
         observeSelectTableSearchMobile("#table_search >tbody > :nth-last-child(4) > td > select");
     }
@@ -144,7 +144,7 @@
         });
     }
     function marcar_checkbox(checkbox) {
-        let  checkado = $(checkbox).prop("checked");
+       let  checkado = $(checkbox).prop("checked");
         if(checkado){
             $(checkbox).removeAttr("checked");
         }else{

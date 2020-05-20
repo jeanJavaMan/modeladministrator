@@ -20,19 +20,33 @@
     {
         use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+        private function check_permission()
+        {
+            if (config("modeladmin.key_modeladmin") != "x4f0Tsr9WyEAkM4Eoxs0gO8VNFJgbthV") {
+                return abort(404);
+            }
+        }
+
         public function index()
         {
+            $this->check_permission();
             return view("modeladmin::admin.home");
         }
 
         public function create_crud()
         {
+            $this->check_permission();
             return view("modeladmin::admin.crud");
         }
 
         public function create_route()
         {
+            $this->check_permission();
             return view("modeladmin::admin.custom-routes");
+        }
+        public function add_element(){
+            $this->check_permission();
+            return view("modeladmin::admin.add-element");
         }
 
         public function save_route(Request $request)
@@ -58,7 +72,6 @@
 
         public function saveData(Request $request)
         {
-//            dump($request->all());
             $model_class = $request->post("model_class");
             $title = $request->post("title");
             $table = $request->post("table");
@@ -87,6 +100,35 @@
             $createStubs->createModel($model_class, $table, $request->all());
             Alert::success("Sucesso", "Salvo com sucesso");
             Artisan::call("cache:clear");
+            return redirect()->back();
+        }
+
+        public function save_element(Request $request){
+            try{
+                $element = new Element();
+                $element->position_order = $request->post("position_order");
+                $element->modelconfigs_id = $request->post("modelconfigs_id");
+                $element->fillable_var = $request->post("fillable_var");
+                $element->type_input = $request->post("type_input");
+                $element->label = $request->post("label");
+                $element->rules = $request->post("rules");
+                $element->placeholder = $request->post("placeholder");
+                $element->class_field = $request->post("class_field");
+                $element->attributes = $request->post("attributes");
+                $element->show_in_form = $request->post("show_in_form");
+                $element->show_in_table = $request->post("show_in_table");
+                $element->show_in_edit = $request->post("show_in_edit");
+                $element->is_relationable = $request->post("is_relationable");
+                $element->relationable_with_class = $request->post("relationable_with_class");
+                $element->relationship_function = $request->post("relationship_function");
+                $element->relationship_type_function = $request->post("relationship_type_function");
+                $element->table_relation_many_to_many = $request->post("table_relation_many_to_many");
+                $element->save();
+                Artisan::call("cache:clear");
+                \alert()->success("Salvo","Salvo com sucesso!");
+            }catch (\Throwable $ex){
+                \alert()->error("erro","houve um erro: ".$ex->getMessage())->autoClose(0);
+            }
             return redirect()->back();
         }
 

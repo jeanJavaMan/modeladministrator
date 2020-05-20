@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 class ModelAdministratorProvider extends ServiceProvider
 {
     public function boot(){
+        $this->publishes([
+            __DIR__.'/config/modeladmin.php' => config_path('modeladmin.php'),
+        ]);
         $this->mergeConfigFrom(__DIR__."/config/modeladmin.php","modeladmin");
         if(!config("modeladmin.disable_migration")) {
             $this->loadMigrationsFrom(__DIR__ . "/database/migrations");

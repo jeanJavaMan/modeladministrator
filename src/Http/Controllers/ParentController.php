@@ -160,8 +160,11 @@
                     $id = \Crypt::decrypt($request->post("id"));
                     $model_class = $this->route->modelConfig_cache()->model_class;
                     $model = $model_class::find($id);
-                    $model->delete();
-                    Alert::success("Sucesso", "Deletado com sucesso!");
+                    if($model->secureDelete($this->route->modelConfig_cache())){
+                        Alert::success("Sucesso", "Deletado com sucesso!");
+                    }else{
+                        Alert::warning("Item em uso", "Não foi possível excluir, pois já se encontra em uso!")->autoClose(0);
+                    }
                 } catch (\Throwable $ex) {
                     \Log::error($ex);
                     Alert::error("Erro", "Houve um erro! " . $ex->getMessage())->autoClose(0);

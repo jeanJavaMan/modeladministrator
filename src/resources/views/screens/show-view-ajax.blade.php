@@ -61,7 +61,7 @@
                         @endphp
                         @if($result_hasOne)
                             <strong>{{$element->label ?? \Jeanderson\modeladministrator\Models\ModelConfig::getModelConfigWithCache($element->relationable_with_class)->title}}
-                                :</strong> {{$result_hasOne->toView() ?? "Dado Nulo ou excluído"}}
+                                :</strong> {{\Jeanderson\modeladministrator\Utils\ShowCustomModel::showData($result_hasOne)}}
                         @endif
                         <hr>
                     </div>
@@ -77,7 +77,7 @@
                             <ul>
                                 @foreach($results as $result)
                                     <li>
-                                        {{$result->toView() ?? "Dado nulo ou excluído"}}
+                                        {{\Jeanderson\modeladministrator\Utils\ShowCustomModel::showData($result)}}
                                     </li>
                                 @endforeach
                             </ul>

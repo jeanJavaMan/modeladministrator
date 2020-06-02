@@ -160,7 +160,7 @@
                     $id = \Crypt::decrypt($request->post("id"));
                     $model_class = $this->route->modelConfig_cache()->model_class;
                     $model = $model_class::find($id);
-                    if($model->secureDelete($this->route->modelConfig_cache())){
+                    if($model->secureDelete()){
                         Alert::success("Sucesso", "Deletado com sucesso!");
                     }else{
                         Alert::warning("Item em uso", "Não foi possível excluir, pois já se encontra em uso!")->autoClose(0);

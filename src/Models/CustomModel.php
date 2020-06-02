@@ -107,23 +107,18 @@
             return [];
         }
 
-
         /**
-         * Faz um delete seguro, verificando se os elementos de relacionamento estão ligados a ele.
-         * @param ModelConfig $modelConfig
+         * Faz um delete seguro, verificando se há referências a este elemento.
          * @return bool
          * @throws \Exception
          */
-        public function secureDelete(ModelConfig $modelConfig)
+        public function secureDelete()
         {
-            $elements = $modelConfig->elements_cache();
-            $elements_relationables = $elements->filter(function ($element) {
-                /**@var Element $element */
-                return $element->is_relationable;
-            });
-            foreach ($elements_relationables as $e) {
-                $function = $e->relationship_function;
-                if ($this->$function()->exists()) {
+            $elements = Element::where("relationable_with_class", "\\" . get_called_class())->get();
+            foreach ($elements as $element) {
+                $modelConfig = $element->modelconfig()->first();
+                $modelClass = $modelConfig->model_class;
+                if ($modelClass::where($element->fillable_var, $this->id)->exists()) {
                     return false;
                 }
             }

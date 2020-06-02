@@ -37,10 +37,10 @@ class Element extends Eloquent
     protected $table = "elements";
 
     /**
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne|ModelConfig
      */
     public function modelconfig(){
-        return $this->belongsTo(ModelsConfig::class);
+        return $this->hasOne(ModelConfig::class,"id","modelconfigs_id");
     }
 
     /**

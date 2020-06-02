@@ -228,6 +228,7 @@
                 $query = $model->customQuerySearch($request);
             } else {
                 $query = $modelClass::query();
+                $query = $query->orWhere("id",$request->get("search"));
                 foreach ($model->getFillable() as $fillable) {
                     $query = $query->orWhere($fillable, 'LIKE', "%" . $request->get("search") . "%");
                 }

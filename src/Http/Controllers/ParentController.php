@@ -222,17 +222,19 @@
         {
             $modelClass = $this->route->modelConfig_cache()->model_class;
             /**@var \Illuminate\Database\Eloquent\Builder $query */
+            $fillableSearch = $modelClass::$fillableSearch;
             if ($modelClass::$use_custom_query_search) {
                 $query = $modelClass::customQuerySearch($request);
             } else {
                 $query = $modelClass::query();
                 $query = $query->orWhere("id",$request->get("search"));
-                foreach ($modelClass::$fillableSearch as $fillable) {
+                foreach ($fillableSearch as $fillable) {
                     $query = $query->orWhere($fillable, 'LIKE', "%" . $request->get("search") . "%");
                 }
             }
             $json_response = [];
-            $results = $query->paginate(7,$modelClass::$fillableSearch);
+            $fillableSearch[] = "id";
+            $results = $query->paginate(7,$fillableSearch);
             /**@var CustomModel $result */
             foreach ($results as $result) {
                 $json_response[] = ["id" => $result->id, "text" => $result->toView()];

@@ -14,7 +14,13 @@
         /**
          * @var bool Informa se ira utilizar o método custom_query_search para pesquisar personalizada.
          */
-        public $use_custom_query_search = false;
+        public static $use_custom_query_search = false;
+        /**
+         * Informa quais campos são pesquisaveis!
+         * Usar o mesmo que estão em toView(), pois o resultado conterá apenas esses atributos
+         * @var array
+         */
+        public static $fillableSearch = [];
 
         /**
          * Retorna um texto para exibição dos valores.
@@ -83,7 +89,7 @@
          * @param Request $request
          * @return \Illuminate\Database\Eloquent\Builder
          */
-        public function customQuerySearch(Request $request)
+        public static function customQuerySearch(Request $request)
         {
             return CustomModel::query();
         }

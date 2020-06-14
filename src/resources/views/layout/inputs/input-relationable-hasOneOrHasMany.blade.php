@@ -52,8 +52,8 @@
                         }
                     }
                 },
-                cache: false,
-                delay: 250
+                cache: true,
+                delay: 10
             },
             placeholder: "{{__("modeladminlang::default.write_for_search")}}",
 //                minimumInputLength: 2,
@@ -86,8 +86,8 @@
                         }
                     }
                 },
-                cache: false,
-                delay: 250
+                cache: true,
+                delay: 10
             },
             placeholder: "{{__("modeladminlang::default.write_for_search")}}",
 //                minimumInputLength: 2,

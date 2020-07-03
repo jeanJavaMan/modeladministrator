@@ -8,12 +8,14 @@ use Jeanderson\modeladministrator\Models\CustomModel;
 /**
  * Class {{className}}
  {{property}}
+ * @property int id
  * @package App\Models
  */
 class {{className}} extends CustomModel
 {
     protected $fillable = {{fillable}};
     protected $table = "{{tableName}}";
+    public static $fillableSearch = {{fillableSearch}};
 
     public function toView()
     {

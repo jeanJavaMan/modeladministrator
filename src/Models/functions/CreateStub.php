@@ -17,12 +17,19 @@
             $this->createModelFillables($template, $attributes["fillable_var"])
                 ->createRelations($template, $attributes)
                 ->createModelProperty($template, $attributes)
-                ->createModelToView($template, $attributes["fillable_var"][0]);
+                ->createModelToView($template, $attributes["fillable_var"][0])
+                ->createFillableSearch($template,$attributes["fillable_var"][0]);
 
             if (!file_exists(app_path("/Models"))) {
                 mkdir(app_path("/Models"), 0777, true);
             }
             file_put_contents(app_path("/Models/$class.php"), $template);
+        }
+
+        public function createFillableSearch(&$template,$fillable_var){
+            $fillableSearch = "['".$fillable_var."']";
+            $template = str_replace("{{fillableSearch}}", $fillableSearch, $template);
+            return $this;
         }
 
 //        public function createMigration(array $attributes)
@@ -64,7 +71,7 @@
 
         private function createModelToView(&$template, $fillable_var)
         {
-            $toView = "\$this->$fillable_var.\" \".";
+            $toView = "\$this->$fillable_var";
             $toView = rtrim($toView, ".");
             $template = str_replace("{{toView}}", $toView, $template);
             return $this;

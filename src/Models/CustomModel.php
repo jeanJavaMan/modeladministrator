@@ -1,14 +1,19 @@
 <?php
 
-
     namespace Jeanderson\modeladministrator\Models;
 
-
     use Bnb\Laravel\Attachments\HasAttachment;
+    use Eloquent;
+    use Exception;
     use Illuminate\Http\Request;
     use Illuminate\Support\Str;
 
-    class CustomModel extends \Eloquent
+    /**
+     * Class CustomModel
+     * @package Jeanderson\modeladministrator\Models
+     *  @mixin  Eloquent
+     */
+    class CustomModel extends Eloquent
     {
         use HasAttachment;
         /**
@@ -56,15 +61,6 @@
         public function fieldsUpdate(array $data)
         {
             $this->fillInFields($data);
-//        $elements_checkbox = ModelConfig::getModelConfigWithCache("\\".get_called_class())->elements_cache()->filter(function ($item) {
-//            return $item->type_input == "checkbox";
-//        });
-//        foreach ($elements_checkbox as $element) {
-//            if (!key_exists($element->fillable_var, $data)) {
-//                $fillable = $element->fillable_var;
-//                $this->$fillable = false;
-//            }
-//        }
         }
 
         /**
@@ -116,7 +112,7 @@
         /**
          * Faz um delete seguro, verificando se há referências a este elemento.
          * @return bool
-         * @throws \Exception
+         * @throws Exception
          */
         public function secureDelete()
         {
